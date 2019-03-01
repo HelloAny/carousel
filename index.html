@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="anticon/iconfont.js"></script>
+    <script src="JQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <title>Document</title>
+    <style>
+      .carousel {
+        height: 400px;
+        width: 500px;
+        position: relative;
+        left: 200px;
+        top: 100px;
+        border: 1px solid black;
+        overflow: hidden;
+      }
+
+      #pic {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 500px;
+        height: 300px;
+      }
+
+      .carousel #pic img {
+        width: 100%;
+        height: 80%;
+      }
+      .icon {
+        width: 30px;
+        height: 30px;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+        z-index: 2;
+        background: rgb(136, 193, 201, 0.6);
+      }
+      .slider_right {
+        position: absolute;
+        left: 90%;
+        top: 30%;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .slider_left {
+        position: absolute;
+        left: 5%;
+        top: 30%;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .icon:hover {
+        color: aliceblue;
+        background: rgb(235, 6, 63, 0.6);
+      }
+
+      #btn {
+        position: absolute;
+        left: 35%;
+        top: 80%;
+        width: 40%;
+        height: 20px;
+        display: inline-block;
+      }
+
+      .dit {
+        background: rgb(11, 72, 238, 1);
+        border-radius: 4em;
+        height: 15px;
+        width: 15px;
+        display: inline-block;
+        margin: 8px;
+      }
+
+      .dit:hover {
+        background: yellow;
+        cursor: pointer;
+      }
+
+      .printer {
+        background: yellow;
+      }
+    </style>
+
+    <script>
+      window.onload = function() {
+        var car = document.querySelector('.carousel');
+        var pic = document.getElementById('pic').children;
+        var img = [];
+        var btn = document.getElementById('btn').children;
+        var dit = [];
+        var left = document.getElementById('left');
+        var right = document.getElementById('right');
+
+        console.log(car);
+
+        for (i = 0; i < pic.length; i++) {
+          img[i] = pic[i];
+          dit[i] = btn[i];
+        }
+
+        var i = 0;
+        dit[0].classList.add('printer');
+        sessionStorage.setItem('z', JSON.stringify(i));
+
+        right.onclick = function foo() {
+          var z = JSON.parse(sessionStorage.getItem('z'));
+
+          var i = z + 1;
+
+          if (i < dit.length) {
+            img[i - 1].style.display = 'none';
+            dit[i - 1].classList.remove('printer');
+
+            img[i].style.display = 'block';
+            dit[i].classList.add('printer');
+          }
+          if (i == 4) {
+            img[3].style.display = 'none';
+            dit[3].classList.remove('printer');
+
+            img[0].style.display = 'block';
+            dit[0].classList.add('printer');
+            var i = 0;
+          }
+
+          sessionStorage.setItem('z', i);
+        };
+
+        function foo() {
+          var z = JSON.parse(sessionStorage.getItem('z'));
+
+          var i = z + 1;
+
+          if (i < dit.length) {
+            img[i - 1].style.display = 'none';
+            dit[i - 1].classList.remove('printer');
+            img[i].style.display = 'block';
+            dit[i].classList.add('printer');
+          }
+          if (i == 4) {
+            img[3].style.display = 'none';
+            dit[3].classList.remove('printer');
+            img[0].style.display = 'block';
+            dit[0].classList.add('printer');
+            var i = 0;
+          }
+          sessionStorage.setItem('z', i);
+        }
+        var timer = null;
+        timer = setInterval(foo, 2000);
+
+        car.onmouseover = function() {
+          clearInterval(timer);
+        };
+        car.onmouseout = function() {
+          clearInterval(timer);
+          timer = setInterval(foo, 3000);
+        };
+
+        left.onclick = function() {
+          var z = JSON.parse(sessionStorage.getItem('z'));
+
+          var i = z - 1;
+
+          if (i < dit.length && i >= 0) {
+            img[i + 1].style.display = 'none';
+            dit[i + 1].classList.remove('printer');
+            img[i].style.display = 'block';
+            dit[i].classList.add('printer');
+          }
+
+          if (i == -1) {
+            img[0].style.display = 'none';
+            dit[0].classList.remove('printer');
+            img[3].style.display = 'block';
+
+            dit[3].classList.add('printer');
+
+            var i = 3;
+          }
+
+          sessionStorage.setItem('z', i);
+        };
+
+        for (var i = 0; i < dit.length; i++) {
+          dit[i].id = i;
+          //给每个li项绑定点击事件
+          dit[i].onmouseenter = function() {
+            //获取当前li项的index值
+            index = this.id;
+            for (i = 0; i < dit.length; i++) {
+              img[i].style.display = 'none';
+              dit[i].classList.remove('printer');
+            }
+            img[index].style.display = 'block';
+            dit[index].classList.add('printer');
+            sessionStorage.setItem('z', index);
+          };
+        }
+      };
+    </script>
+  </head>
+
+  <body>
+    <div class="carousel">
+      <div id="pic">
+        <div style="display:block;">
+          <img src="img/645.png" alt="" />
+        </div>
+        <div style="display:none;">
+          <img src="img/65465.jpg" alt="" />
+        </div>
+        <div style="display:none;">
+          <img src="img/b1-bg.jpg" alt="" />
+        </div>
+        <div style="display:none;">
+          <img src="img/bg2.jpg" alt="" />
+        </div>
+      </div>
+
+      <div>
+        <svg class="icon slider_left" id="left" aria-hidden="true">
+          <use xlink:href="#icon-left"></use>
+        </svg>
+        <svg class="icon slider_right" id="right" aria-hidden="true">
+          <use xlink:href="#icon-right"></use>
+        </svg>
+      </div>
+      <div id="btn">
+        <div class="dit"></div>
+        <div class="dit"></div>
+        <div class="dit"></div>
+        <div class="dit"></div>
+      </div>
+    </div>
+  </body>
+</html>
